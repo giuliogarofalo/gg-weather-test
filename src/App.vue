@@ -3,7 +3,6 @@
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import { ref, computed, onMounted } from "vue";
 import LocationTools from "./components/LocationTools.vue";
-import DarkMode from "./components/DarkMode.vue";
 import CurrentWeather from "./components/CurrentWeather.vue";
 
 
@@ -90,17 +89,14 @@ onMounted(() => {
       @get-coords="getLocation"
       @search="locationBySearch"
       />
-      <DarkMode />
     </header>
     <main class="flex flex-grow md:justify-center">
-      <div class="flex flex-col sm:flex-row w-full gap-4" v-if="weather && forecast.length > 0">
+      <div class="flex flex-col sm:flex-row gap-4" v-if="weather && forecast.length > 0">
        <div class="w-full sm:w-6/12 md:w-6/12 grow"  >
           <CurrentWeather
               :name="name"
               :icon="weather.weather[0].icon"
               :temp="weather.main.temp"
-              :temp_max="weather.main.temp_max"
-              :temp_min="weather.main.temp_min"
               :feels_like="weather.main.feels_like"
               :main="weather.weather[0].main"
               :description="weather.weather[0].description"
@@ -108,7 +104,6 @@ onMounted(() => {
               :sunset="sunset"
               :humidity="weather.main.humidity"
               :wind_speed="weather.wind.speed"
-              :cloudiness="weather.clouds.all"
               />
         </div>
       </div>
