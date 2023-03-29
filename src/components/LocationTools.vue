@@ -30,15 +30,12 @@
       class="p-3
           w-full
           border-none
-        bg-[rgba(251,252,251,.8)]
-        dark:bg-[#37444A]
+        bg-[#37444A]
         rounded-full
         px-3
         text-[18px]
-      text-sky-800
-      dark:text-lime-50
-      placeholder:text-sky-800
-      dark:placeholder:text-lime-50
+      text-lime-50
+      placeholder:text-lime-50
        border
       border-gray-300
       focus:ring-blue-300

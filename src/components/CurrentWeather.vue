@@ -12,18 +12,19 @@ defineProps({
   sunset: Number,
   humidity: Number,
   wind_speed:Number,
+  isCelsius: Boolean,
 })
 </script>
 
 <template>
-  <div class="px-2 text-sky-800 dark:text-sky-400 font-semibold text-md flex-wrap">
+  <div class="px-2 text-sky-400 font-semibold text-md flex-wrap">
     <div
-      class="flex flex-col p-4 rounded-md sm:ml-4 relative bg-[rgba(251,252,251,.8)] dark:bg-[rgba(55,68,74,.8)] shadow-[0_10px_30px_-12px_rgba(7,89,133,0.45)]"
+      class="flex flex-col p-4 rounded-md sm:ml-4 relative bg-[rgba(55,68,74,.8)] shadow-[0_10px_30px_-12px_rgba(7,89,133,0.45)]"
     >
       <h1 class="font-black text-3xl  pl-8 text-ellipsis overflow-hidden break-world font-roboto">
-        {{name}}
+        {{name}} - {{ isCelsius }}
       </h1>
-      <h2 class=" dark:text-lime-50 font-bold pl-8 mb-3">
+      <h2 class="text-lime-50 font-bold pl-8 mb-3">
         Current Weather
       </h2>
       <div class="text-center my-6 flex flex-wrap">
