@@ -2,7 +2,7 @@
 import { defineComponent } from 'vue'
 export default defineComponent({
   props: ['mode'],
-  emit: ["changeMeasurement"],
+  emit: ['changeMeasurement'],
   setup(props) {
     onMounted(()=> {
       const measureToggle = document.getElementById('teal-toggle')
@@ -35,17 +35,14 @@ export default defineComponent({
         bg-gray-600
         rounded-2xl
         peer
-        dark:bg-sky-300
         peer-focus:ring-4
         peer-checked:after:translate-x-full
         after:content-['']
         after:absolute
         after:top-0
         after:left-[-0.4rem]
-      after:bg-gray-300
-        after:shadow-[4px_0px_10px_1px_rgba(17,29,23,0.3)]
-        dark:after:shadow-[-4px_0px_10px_1px_rgba(17,89,133,0.3)]
-      dark:after:bg-sky-200
+        after:shadow-[-4px_0px_10px_1px_rgba(17,89,133,0.3)]
+      after:bg-sky-200
         after:rounded-2xl
         after:h-[2.1rem]
         after:w-[2.1rem]

@@ -2,59 +2,29 @@
 import { ref, computed, onMounted } from "vue";
 import LocationTools from "./components/LocationTools.vue";
 import CurrentWeather from "./components/CurrentWeather.vue";
-import DarkMode from "./components/SwitchMesasure.vue"
+import SwitchMeasure from "./components/SwitchMeasure.vue"
 
 const weather = ref({})
-const forecast = ref([])
 const stateNavigator = ref(0)
-const isCelsius = ref(true)
-
-const year = computed(() => new Date().getFullYear())
 
 const name = computed(() => `${weather.value.name}, ${weather.value.sys.country ?? ''}`)
 const sunrise =  computed(() => new Date(weather.value.sys.sunrise * 1000).getHours())
 const sunset = computed(() => new Date(weather.value.sys.sunset * 1000).getHours())
-const temp = computed(() => isCelsius ? weather.value.temp : convertToF(weather.value.temp))
-
-const convertToF = (celsius) => {
-  let fahrenheit = ((celsius * 9) / 5) + 32;
-  return fahrenheit;
-}
 
 const weatherLocation = async (location) => {
-    const urlWeather = `https://api.openweathermap.org/data/2.5/weather?${location}&appid=${import.meta.env.VITE_API_KEY}&units=metric`;
-    console.log(urlWeather)
-    const urlForecast = `https://api.openweathermap.org/data/2.5/forecast?${location}&appid=${import.meta.env.VITE_API_KEY}&units=metric`
+  const urlWeather = `https://api.openweathermap.org/data/2.5/weather?${location}&appid=${import.meta.env.VITE_API_KEY}&units=metric`;
     try {
       const resolve = await Promise.all([
         fetch(urlWeather),
-        fetch(urlForecast)
       ])
-      if (resolve[0].status == 404 || resolve[1].status == 404) {
+      if (resolve[0].status == 404) {
         throw 'City no found'
       }
       const data = resolve.map(response => response.json());
       weather.value = await data[0];
-      
-      //filter the list index 40/8
-      const forecastOrigin = await data[1]
-      const forecastDays = filterByIncrement(forecastOrigin.list,  8, 40)
-      
-      forecast.value = forecastDays
     } catch(err) {
       console.error(err);
     }
-}
-
-const filterByIncrement = (iterable, increment, end) => {
-  const iterableLength = iterable.length
-  const result = [];
-  let index = increment;
-  while(index < iterableLength && index < end) {
-    result.push(iterable[index])
-    index += increment;
-  }
-  return result;
 }
 
 function locationBySearch(query) {
@@ -64,7 +34,7 @@ function locationBySearch(query) {
 }
 
 async function getLocation() {
-   if ('geolocation' in navigator) {
+  if ('geolocation' in navigator) {
     navigator.geolocation.getCurrentPosition(pos => {
       const {latitude, longitude} = pos.coords
       weatherLocation(`lat=${latitude}&lon=${longitude}`)
@@ -72,9 +42,9 @@ async function getLocation() {
     err => {
       stateNavigator.value = err.code // code 1 User denied Geolocation
     })
-   } else  {
-    window.alert("Could not get location")
-   }
+  } else  {
+  window.alert("Could not get location")
+  }
 }
 
 onMounted(() => {
@@ -87,10 +57,10 @@ onMounted(() => {
   <div class="min-h-screen flex flex-col md:max-w-5xl mx-auto p-4">
     <header class="flex justify-between pb-8">
       <LocationTools
-      @get-coords="getLocation"
-      @search="locationBySearch"
+        @get-coords="getLocation"
+        @search="locationBySearch"
       />
-      <DarkMode :mode="isCelsius"/>
+      <SwitchMeasure :mode="isCelsius"/>
     </header>
     <main class="flex flex-grow md:justify-center">
       <div class="flex flex-col sm:flex-row gap-4" v-if="weather">
@@ -119,7 +89,7 @@ onMounted(() => {
     </main>
 
     <footer class="flex justify-between p-4 mt-2 text-sky-400">
-      Giu test Vue Storefront
+      Giulio Garofalo - Vue Storefront - Test
     </footer>
   </div>
 </template>
