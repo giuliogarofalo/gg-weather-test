@@ -28,7 +28,7 @@
       @click.prevent="handleClick"
       type="button"
       aria-label="focus"
-      class="h-[48px] w-1/12 float-right absolute right-6"
+      class="h-[48px] w-1/12 float-right absolute right-6 search-button"
     >
     </button>
     <input
@@ -54,17 +54,17 @@
   </div>
   <button 
     @click="locateMe"
-    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full locate-me">
     ⌖
   </button>
   <button 
     @click="convertTo"
-    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+    class="convert bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
     Convert 🌡️
   </button>
   <button 
     @click="trash"
-    class="bg-white-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+    class="clear-cache bg-white-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
     ❌ Cache
   </button>
 
