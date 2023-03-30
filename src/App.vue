@@ -1,8 +1,9 @@
 <script setup>
-import { ref, computed, onMounted} from "vue";
+import { ref, computed, watch, onMounted} from "vue";
 import LocationTools from "./components/LocationTools.vue";
 import CurrentWeather from "./components/CurrentWeather.vue";
 
+const isCached = ref(false)
 const isCelsius = ref(true)
 const weather = ref(undefined)
 const stateNavigator = ref(0)
@@ -15,40 +16,40 @@ const switchMeasurement = () => {
   isCelsius.value = !isCelsius.value
 }
 
+// watch(isCached, (count, prevCount) => {
+//   localStorage.setItem("isCached", isCached.value)
+// })
 
-// funtion in javascript to generate a short random string?
-// const fetchWithRetry = async (url, opts, tries=5) => {
-//   const errs = [];
-//   for (let i = 0; i < tries; i++) {
-//     try {
-//       return await fetch(url, opts);
-//     }
-//     catch (err) {
-//       errs.push(err);
-//     }
-//   } 
-//   throw errs;
-// };
+// const weatherData = computed({
+//   get: () => JSON.parse(localStorage.getItem('weatherData') ?? null),
+//   set: (value) => {
+//     localStorage.setItem('weatherData', JSON.stringify(value))
+//   }
+// });
 
-// fetchWithRetry(urlWeather)
-//   .then(response => response.json())
-//   .then(data => weather.value = data)
-//   .catch(err => console.error(err));
+// const isCachedC = computed({
+//   get: () => isCached.value || null,
+//   set: (value) => {
+//     localStorage.setItem('isCached', value)
+//   }
+// });
 
 async function weatherLocation(location) {
   const urlWeather = `https://api.openweathermap.org/data/2.5/weather?${location}&appid=${import.meta.env.VITE_API_KEY}&units=metric`;
-  const response = await fetch(urlWeather);
+  const response = await fetch(urlWeather)
+  .catch(error => {
+  console.log(error.message);
+});
   if (response.status === 404) {
     const message = `An error has occured: ${response.status}`;
-    throw new Error(message);
+    console.warn(message);
   }
+
   if (response.status === 200) { 
     const data = await response.json();
     localStorage.setItem(`weatherData`, JSON.stringify(data)) 
     weather.value = data
-  } else {
-    localStorage.setItem(`weatherData`, null);
-  }
+  } 
 } 
 
 weatherLocation().catch(error => {
@@ -75,6 +76,37 @@ async function getLocation() {
    }
 }
 
+const deleteCache = ()=> {
+  localStorage.setItem("weatherData", null)
+  localStorage.setItem("isCached", null)
+}
+
+onMounted(()=> {
+  const inMemory = localStorage.getItem("weatherData");
+if (inMemory) {
+    const loadPrevData = confirm("Previous data were found, to you want to use them?");
+    // loadPrevData ? isCached.value = true : isCached.value = false;
+    if (loadPrevData) {
+      const parsed = localStorage.getItem("weatherData")
+      const gne = [JSON.parse(parsed)]
+      weather.value = gne[0]
+    } else {
+      weather.value = undefined
+    }
+  } 
+})
+
+// onMounted(() => {
+//   const inMemory = localStorage.getItem("weatherData");
+//   if (inMemory) {
+//     isCachedC.set(true)
+//     isCached.value = true;
+//     weather.value = weatherData.get()
+//   } else {
+//     isCachedC.set(false)
+//     weather.value = null
+//   }
+// })
 </script>
 
 <template>
@@ -84,7 +116,9 @@ async function getLocation() {
       @get-coords="getLocation"
       @search="locationBySearch"
       @convert-to-farenheit="switchMeasurement"
+      @trash-cache="deleteCache"
       />
+      {{ isCached }}
     </header>
     <main class="flex flex-grow md:justify-center">
       <div class="flex flex-col sm:flex-row gap-4" v-if="weather">
