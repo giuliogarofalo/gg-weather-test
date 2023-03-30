@@ -43,8 +43,7 @@
         rounded-full
         px-3
         text-[18px]
-      text-sky-800
-      dark:text-lime-50
+      text-lime-50
       placeholder:text-lime-50
        border
       border-gray-300

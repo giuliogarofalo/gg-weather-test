@@ -1,6 +1,4 @@
 <script setup>
-import {rounded} from '../utils'
-
 defineProps({
   name: String,
   main: String,
@@ -14,6 +12,8 @@ defineProps({
   isCelsius: Boolean,
 })
 
+const rounded = (value) => Math.round(value)
+
 const convertToF = (celsius) => {
   let fahrenheit = ((celsius * 9) / 5) + 32;
   return fahrenheit;
@@ -21,11 +21,11 @@ const convertToF = (celsius) => {
 </script>
 
 <template>
-  <div class="px-2 text-sky-800 dark:text-sky-400 font-semibold text-md flex-wrap">
+  <div class="px-2 text-sky-400 font-semibold text-md flex-wrap">
     <div
-      class="flex flex-col p-4 rounded-md sm:ml-4 relative bg-[rgba(251,252,251,.8)] dark:bg-[rgba(55,68,74,.8)] shadow-[0_10px_30px_-12px_rgba(7,89,133,0.45)]"
+      class="flex flex-col p-4 rounded-md sm:ml-4 relative bg-[rgba(55,68,74,.8)] shadow-[0_10px_30px_-12px_rgba(7,89,133,0.45)]"
     >
-      <h2 class=" dark:text-lime-50 font-bold pl-8 mb-3">
+      <h2 class="text-lime-50 font-bold pl-8 mb-3">
         Current Weather
       </h2>
       <h1 class="font-black text-3xl  pl-8 text-ellipsis overflow-hidden break-world font-roboto">
@@ -46,26 +46,42 @@ const convertToF = (celsius) => {
         <div
           class="mx-auto flex flex-col items-center"
         >
+        <p>
           sunrise
-
+        </p>
           {{sunrise}}AM
         </div>
 
         <div
           class="mx-auto flex flex-col items-center"
         >
-          sunset
+          <p>
+            sunset
+          </p>
           {{sunset}}PM
         </div>
         <div class="mx-auto flex flex-col items-center">
-        humidity
+        <p>
+          humidity
+        </p>
         {{humidity}}%
         </div>
         <div class="mx-auto flex flex-col items-center ">
-        wind
+        <p>
+          wind
+        </p>
           {{rounded(wind_speed)}}km/h
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.items-center {
+  font-size: xx-large
+}
+.items-center p{
+  font-size: small;
+}
+</style>
