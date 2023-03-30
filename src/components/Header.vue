@@ -50,7 +50,6 @@
       focus:ring-blue-300
         pl-6"
     />
-    
   </div>
   <button 
     @click="locateMe"
@@ -67,5 +66,4 @@
     class="clear-cache bg-white-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
     ❌ Cache
   </button>
-
 </template>

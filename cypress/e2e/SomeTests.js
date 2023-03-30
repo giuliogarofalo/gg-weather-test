@@ -16,9 +16,9 @@ describe('Some Tests', () => {
   })  
 
   it('receive current weather data typing a correct city name in search input', () => {
-    cy.get('input.rounded-full').type(`Bologna{enter}`)
+    cy.get('input.rounded-full').type(`Canicatti{enter}`)
     cy.get('.search-button').click()
-    cy.contains('h1', 'Bologna')
+    cy.contains('h1', 'Canicatti')
   })
  
 })

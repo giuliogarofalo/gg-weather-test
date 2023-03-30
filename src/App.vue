@@ -3,7 +3,6 @@ import { ref, computed, onMounted} from "vue";
 import Header from "./components/Header.vue";
 import CurrentWeather from "./components/CurrentWeather.vue";
 
-const isCached = ref(false)
 const isCelsius = ref(true)
 const weather = ref(undefined)
 const stateNavigator = ref(0)
@@ -63,19 +62,18 @@ async function getLocation() {
 
 const deleteCache = ()=> {
   localStorage.setItem("weatherData", null)
-  localStorage.setItem("isCached", null)
 }
 
 onMounted(()=> {
   const inMemory = localStorage.getItem("weatherData");
-if (inMemory && inMemory !== null) {
+if (inMemory !== undefined && inMemory !== null && inMemory !== 'null') {
     const loadPrevData = confirm("Previous data were found, to you want to use them?");
     if (loadPrevData) {
       const parsed = localStorage.getItem("weatherData")
-      const gne = [JSON.parse(parsed)]
-      weather.value = gne[0]
+      const cachedLocation = JSON.parse(parsed)
+      weather.value = cachedLocation
     } else {
-      getLocation()
+      weather.value = undefined
     }
   } 
 })
