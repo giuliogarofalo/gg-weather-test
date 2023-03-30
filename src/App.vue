@@ -19,41 +19,31 @@ const sunset = computed(() => new Date(weather.value.sys.sunset * 1000).getHours
 const weatherLocation = async (location) => {
 
     const urlWeather = `https://api.openweathermap.org/data/2.5/weather?${location}&appid=${import.meta.env.VITE_API_KEY}&units=metric`;
-    const urlForecast = `https://api.openweathermap.org/data/2.5/forecast?${location}&appid=${import.meta.env.VITE_API_KEY}&units=metric`
-  console.log(urlForecast)
-    try {
-    /**
-     * Promise [currentWeather, Forecast]
-     */
-      const resolve = await Promise.all([
-        fetch(urlWeather),
-        fetch(urlForecast)
-      ])
-      if (resolve[0].status == 404 || resolve[1].status == 404) {
-        throw 'City no found'
+    
+    fetch(urlWeather)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === 404) {
+        const message = `City not found: ${data.status}`;
+        throw(message);
       }
-      const data = resolve.map(response => response.json());
-      weather.value = await data[0];
+      console.log(data)
+      weather.value = data
+  })
+  .catch(console.error);
+
+  // try {
+  //     const data = await fetch(urlWeather)
+  //     const res = await data.json()
+  //     console.log(res)
+
       
-      //filter the list index 40/8
-      const forecastOrigin = await data[1]
-      const forecastDays = filterByIncrement(forecastOrigin.list,  8, 40)
-
-      forecast.value = forecastDays
-    } catch(err) {
-      console.error(err);
-    }
-}
-
-const filterByIncrement = (iterable, increment, end) => {
-  const iterableLength = iterable.length
-  const result = [];
-  let index = increment;
-  while(index < iterableLength && index < end) {
-    result.push(iterable[index])
-    index += increment;
-  }
-  return result;
+  
+  //     weather.value = res
+      
+  //   } catch(err) {
+  //     console.error(err);
+  //   }
 }
 
 function locationBySearch(query) {
@@ -91,7 +81,7 @@ onMounted(() => {
       />
     </header>
     <main class="flex flex-grow md:justify-center">
-      <div class="flex flex-col sm:flex-row gap-4" v-if="weather && forecast.length > 0">
+      <div class="flex flex-col sm:flex-row gap-4" v-if="weather">
        <div class="w-full sm:w-6/12 md:w-6/12 grow"  >
           <CurrentWeather
               :name="name"
