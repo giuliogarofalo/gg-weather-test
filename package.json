@@ -1,5 +1,5 @@
 {
-  "name": "giulio-garofalo-weather-app",
+  "name": "giulio-garofalo-vuestorefront-weather-app",
   "license": "MIT",
   "author": "Giulio Garofalo",
   "private": true,
@@ -15,10 +15,8 @@
     "cy:ui": "npx cypress open"
   },
   "dependencies": {
-    "chart.js": "^3.9.1",
     "gh-pages": "^4.0.0",
-    "vue": "^3.2.37",
-    "vue-chart-3": "^3.1.8"
+    "vue": "^3.2.37"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.1.0",

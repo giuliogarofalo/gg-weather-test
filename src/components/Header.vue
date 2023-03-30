@@ -20,7 +20,6 @@
   const trash = () => {
     emit('trashCache')
   }
-  
 </script>
 <template>
   <div class="w-full sm:w-6/12 md:w-12/12 h-[48px] px-4 relative">

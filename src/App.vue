@@ -40,7 +40,7 @@ weatherLocation().catch(error => {
   console.log(error.message); // 'An error has occurred: 404'
 });
 
-function locationBySearch(query) {
+function locationByCity(query) {
   if (query != ''){
     weatherLocation(`q=${query}`)
   }
@@ -84,7 +84,7 @@ if (inMemory !== undefined && inMemory !== null && inMemory !== 'null') {
     <header class="flex justify-between pb-8">
       <Header
         @get-coords="getLocation"
-        @search="locationBySearch"
+        @search="locationByCity"
         @convert-to-farenheit="switchMeasurement"
         @trash-cache="deleteCache"
       />
