@@ -7,29 +7,19 @@ const isCelsius = ref(true)
 const weather = ref({})
 const forecast = ref([])
 const stateNavigator = ref(0)
-const tempF = ref()
 
 const name = computed(() => `${weather.value.name}, ${weather.value.sys.country ?? ''}`)
 const sunrise =  computed(() => new Date(weather.value.sys.sunrise * 1000).getHours())
 const sunset = computed(() => new Date(weather.value.sys.sunset * 1000).getHours());
 
-watch(isCelsius, () => {
-  if (!isCelsius) {
-    tempF.value = convertToF(weather.main.temp)
-  }
-})
-
 const switchMeasurement = () => {
-  console.log("switch!")
   isCelsius.value = !isCelsius.value
 }
-
 
 const weatherLocation = async (location) => {
 
   const urlWeather = `https://api.openweathermap.org/data/2.5/weather?${location}&appid=${import.meta.env.VITE_API_KEY}&units=metric`;
   const urlForecast = `https://api.openweathermap.org/data/2.5/forecast?${location}&appid=${import.meta.env.VITE_API_KEY}&units=metric`
-  console.log(urlForecast)
     try {
     
       const resolve = await Promise.all([
@@ -102,7 +92,7 @@ async function getLocation() {
               :name="name"
               :temp="weather.main.temp"
               :feels_like="weather.main.feels_like"
-              :main="tempF || weather.weather[0].main"
+              :main=" weather.weather[0].main"
               :description="weather.weather[0].description"
               :sunrise="sunrise"
               :sunset="sunset"
