@@ -2,7 +2,7 @@
   import { ref, defineEmits } from 'vue'
   const citySearch = ref('')
 
-  const emit = defineEmits(['getCoords', 'search', 'locateMe', 'convertToFarenheit'])
+  const emit = defineEmits(['getCoords', 'search', 'locateMe', 'convertToFarenheit', 'trashCache'])
 
   const handleSearch = () => {
     emit('search', citySearch.value.trim())
@@ -15,6 +15,10 @@
 
   const convertTo = () => {
     emit('convertToFarenheit')
+  }
+
+  const trash = () => {
+    emit('trashCache')
   }
   
 </script>
@@ -52,12 +56,17 @@
   <button 
     @click="locateMe"
     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-    Locate Me
+    ⌖
   </button>
   <button 
     @click="convertTo"
     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
     Convert
+  </button>
+  <button 
+    @click="trash"
+    class="bg-white-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+    ❌ Cache
   </button>
 
 </template>
