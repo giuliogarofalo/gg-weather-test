@@ -35,26 +35,11 @@ const weatherLocation = async (location) => {
       const data = resolve.map(response => response.json());
       weather.value = await data[0];
       
-      //filter the list index 40/8
-      const forecastOrigin = await data[1]
-      const forecastDays = filterByIncrement(forecastOrigin.list,  8, 40)
-
-      forecast.value = forecastDays
     } catch(err) {
       console.error(err);
     }
 }
 
-const filterByIncrement = (iterable, increment, end) => {
-  const iterableLength = iterable.length
-  const result = [];
-  let index = increment;
-  while(index < iterableLength && index < end) {
-    result.push(iterable[index])
-    index += increment;
-  }
-  return result;
-}
 
 function locationBySearch(query) {
   if (query != ''){
@@ -91,7 +76,7 @@ onMounted(() => {
       />
     </header>
     <main class="flex flex-grow md:justify-center">
-      <div class="flex flex-col sm:flex-row gap-4" v-if="weather && forecast.length > 0">
+      <div class="flex flex-col sm:flex-row gap-4" v-if="weather">
        <div class="w-full sm:w-6/12 md:w-6/12 grow"  >
           <CurrentWeather
               :name="name"
