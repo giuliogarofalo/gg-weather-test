@@ -1,12 +1,11 @@
 <script setup>
-import { ref, computed} from "vue";
+import { ref, computed, onMounted} from "vue";
 import LocationTools from "./components/LocationTools.vue";
 import CurrentWeather from "./components/CurrentWeather.vue";
 
 const isCelsius = ref(true)
 const weather = ref(undefined)
 const stateNavigator = ref(0)
-const urlWeather = `https://api.openweathermap.org/data/2.5/weather?${location}&appid=${import.meta.env.VITE_API_KEY}&units=metric`;
 
 const name = computed(() => `${weather.value.name}, ${weather.value.sys.country ?? ''}`)
 const sunrise =  computed(() => new Date(weather.value.sys.sunrise * 1000).getHours())
@@ -17,24 +16,24 @@ const switchMeasurement = () => {
 }
 
 
-const fetchWithRetry = async (url, opts, tries=5) => {
-  const errs = [];
-  for (let i = 0; i < tries; i++) {
-    console.log(`trying GET '${url}' [${i + 1} of ${tries}]`);
-    try {
-      return await fetch(url, opts);
-    }
-    catch (err) {
-      errs.push(err);
-    }
-  } 
-  throw errs;
-};
+// funtion in javascript to generate a short random string?
+// const fetchWithRetry = async (url, opts, tries=5) => {
+//   const errs = [];
+//   for (let i = 0; i < tries; i++) {
+//     try {
+//       return await fetch(url, opts);
+//     }
+//     catch (err) {
+//       errs.push(err);
+//     }
+//   } 
+//   throw errs;
+// };
 
-fetchWithRetry(urlWeather)
-  .then(response => response.json())
-  .then(data => weather.value = data)
-  .catch(err => console.error(err));
+// fetchWithRetry(urlWeather)
+//   .then(response => response.json())
+//   .then(data => weather.value = data)
+//   .catch(err => console.error(err));
 
 async function weatherLocation(location) {
   const urlWeather = `https://api.openweathermap.org/data/2.5/weather?${location}&appid=${import.meta.env.VITE_API_KEY}&units=metric`;
@@ -43,10 +42,14 @@ async function weatherLocation(location) {
     const message = `An error has occured: ${response.status}`;
     throw new Error(message);
   }
-  const data = await response.json();
-  console.log(data);
-  weather.value = data
-}
+  if (response.status === 200) { 
+    const data = await response.json();
+    localStorage.setItem(`weatherData`, JSON.stringify(data)) 
+    weather.value = data
+  } else {
+    localStorage.setItem(`weatherData`, null);
+  }
+} 
 
 weatherLocation().catch(error => {
   console.log(error.message); // 'An error has occurred: 404'
